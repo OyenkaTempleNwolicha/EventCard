@@ -1,0 +1,26 @@
+@inject EventService EventService
+@inject AttendanceService AttendanceService
+@page "/events/{id:int}"
+
+@code {
+    [Parameter] public int id { get; set; }
+    private Event? currentEvent;
+
+    protected override void OnInitialized()
+    {
+        currentEvent = EventService.GetEventById(id);
+    }
+}
+
+<h3>@currentEvent?.Name</h3>
+<p>@currentEvent?.Date.ToShortDateString() — @currentEvent?.Location</p>
+<p>@currentEvent?.Description</p>
+<a href="/register/@currentEvent?.Id">Register</a>
+
+<h4>Attendees</h4>
+<ul>
+    @foreach (var user in AttendanceService.GetAttendees(id))
+    {
+        <li>@user.Name</li>
+    }
+</ul>

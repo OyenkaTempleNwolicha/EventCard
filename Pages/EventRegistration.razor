@@ -1,0 +1,35 @@
+@page "/register/{id:int}"
+@inject NavigationManager NavManager
+@inject AttendanceService AttendanceService
+
+@code {
+    [Parameter] public int id { get; set; }
+    private UserRegistration registration = new();
+
+    private void HandleValidSubmit()
+    {
+        registration.EventId = id;
+        AttendanceService.RegisterAttendance(registration);
+        NavManager.NavigateTo("/events");
+    }
+}
+
+<h3>Register for Event @id</h3>
+<EditForm Model="@registration" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind-Value="registration.Name" />
+        <ValidationMessage For="@(() => registration.Name)" />
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="registration.Email" />
+        <ValidationMessage For="@(() => registration.Email)" />
+    </div>
+
+    <button type="submit">Register</button>
+</EditForm>

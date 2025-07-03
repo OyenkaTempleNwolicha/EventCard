@@ -1,0 +1,12 @@
+@inject EventService EventService
+@page "/events"
+
+<h3>Upcoming Events</h3>
+@foreach (var evt in EventService.GetEvents())
+{
+    <div>
+        <h4>@evt.Name</h4>
+        <p>@evt.Date.ToShortDateString() — @evt.Location</p>
+        <a href="/events/@evt.Id">View Details</a>
+    </div>
+}
